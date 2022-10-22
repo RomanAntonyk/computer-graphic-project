@@ -5,8 +5,6 @@ const TextField =({
     error,
     label,
     disabled,
-    inputStyle,
-    name,
     onChange,
     placeholder,
     readOnly,
@@ -24,7 +22,6 @@ const TextField =({
             onChange={onChange}
             placeholder={placeholder}
             value={value}
-            style={inputStyle}
             disabled={disabled}
             readOnly={readOnly}
           />
