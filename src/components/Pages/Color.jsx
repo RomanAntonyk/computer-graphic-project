@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import ColorConverter from '../ColorConverter/ColorConverter'
 import PrimaryButton from '../UI/PrimaryButton'
+import OutlinedButton from '../UI/OutlinedButton'
 import Range from '../UI/Range'
 import Color from 'color'
 
@@ -34,6 +35,10 @@ function ColorPage() {
 
     reader.readAsDataURL(e.target.files[0]);
   }
+  
+  const revert =()=>{
+    drawImage(canvas.current.getContext('2d'), imgRef.current)
+  }
 
   const saturarionChange = () => {
     const cvs = canvas.current;
@@ -54,6 +59,14 @@ function ColorPage() {
     ctx.putImageData(imageData, 0, 0);
   };
 
+  function saveCanvasImage() {
+    const cvs = canvas.current
+    const link = document.createElement('a');
+    link.download = 'convertedImg.png';
+    link.href = cvs.toDataURL();
+    link.click();
+}
+
   return (
     <div className='flex h-full'>
       <div className='w-full flex justify-center items-center'>
@@ -63,8 +76,11 @@ function ColorPage() {
         <div className='flex flex-col gap-2'>
           <h1 className='text-xl mb-2 text-center'>Image сolor corection</h1>
           <Range label={'Yellow saturation'} min={0} max={100} value={coef} onChange={setCoef}/>
-          <PrimaryButton className = 'w-full' onClick={saturarionChange}>Correct Color</PrimaryButton>
+          <PrimaryButton className = 'w-full' disable={imgRef.current===null} onClick={saturarionChange}>Correct Color</PrimaryButton>
+          <OutlinedButton className = 'w-full' disable={imgRef.current===null} onClick={revert}>Revert </OutlinedButton>
+          <OutlinedButton className = 'w-full' disable={imgRef.current===null} onClick={saveCanvasImage}>Download</OutlinedButton>
           <input type="file" accept="image/*" onChange={handleImage}/>
+          
         </div>
         <div>
            <h1 className='text-xl mb-2 text-center'>Color converter</h1>
