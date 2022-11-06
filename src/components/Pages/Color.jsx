@@ -4,6 +4,7 @@ import PrimaryButton from '../UI/PrimaryButton'
 import OutlinedButton from '../UI/OutlinedButton'
 import Range from '../UI/Range'
 import Color from 'color'
+import Settings from '../Containers/Settings'
 
 function ColorPage() {
   const[coef, setCoef] = useState(0);
@@ -19,21 +20,17 @@ function ColorPage() {
 
   function handleImage(e) {
     var reader = new FileReader();
-    const cvs = canvas.current;
-    const ctx = cvs.getContext("2d");
-
-    reader.onload = function (event) {
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
         var img = new Image();
-        img.src = event.target.result;
+        img.src = reader.result;
         img.onload = function () {
             imgRef.current = img;
-            drawImage(ctx, img);
-            
+            drawImage(canvas.current.getContext('2d'), img);
         }
         
     }
-
-    reader.readAsDataURL(e.target.files[0]);
+    
   }
   
   const revert =()=>{
@@ -72,7 +69,7 @@ function ColorPage() {
       <div className='w-full flex justify-center items-center'>
         <canvas ref={canvas}></canvas>
       </div>
-      <div className={'w-96 flex flex-col gap-6 border-slate-500 border-l-2 px-1 h-full'} >
+      <Settings>
         <div className='flex flex-col gap-2'>
           <h1 className='text-xl mb-2 text-center'>Image сolor corection</h1>
           <Range label={'Yellow saturation'} min={0} max={100} value={coef} onChange={setCoef}/>
@@ -84,10 +81,10 @@ function ColorPage() {
         </div>
         <div>
            <h1 className='text-xl mb-2 text-center'>Color converter</h1>
-          <ColorConverter/>
+          <ColorConverter colorVal={new Color({r: 100, g: 30, b: 200})}/>
         </div>
         
-      </div>
+      </Settings>
       
     </div>
   )

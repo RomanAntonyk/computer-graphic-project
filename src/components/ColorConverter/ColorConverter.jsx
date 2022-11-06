@@ -1,11 +1,11 @@
 
 import { useState } from 'react'
 import ColorInput from './ColorInput'
-import Color from 'color';
 
-const ColorConverter = () => {
-     const [color, setColor] = useState(new Color({r:201, g:0, b:154}));
+const ColorConverter = ({colorVal}) => {
+     const [color, setColor] = useState(colorVal);
 
+     
 
   return (
     <div className='flex flex-wrap  flex-row w-full gap-2 justify-between'>
