@@ -4,7 +4,9 @@ import PrimaryButton from '../UI/PrimaryButton'
 import OutlinedButton from '../UI/OutlinedButton'
 import Range from '../UI/Range'
 import Color from 'color'
-import Settings from '../Containers/Settings'
+import SettingsContainer from '../Containers/SettingsContainer'
+import PageContainer from '../Containers/PageContainer'
+import MainContentContainer from '../Containers/MainContentContainer'
 
 function ColorPage() {
   const[coef, setCoef] = useState(0);
@@ -65,11 +67,11 @@ function ColorPage() {
 }
 
   return (
-    <div className='flex h-full'>
-      <div className='w-full flex justify-center items-center'>
+    <PageContainer>
+      <MainContentContainer>
         <canvas ref={canvas}></canvas>
-      </div>
-      <Settings>
+      </MainContentContainer>
+      <SettingsContainer>
         <div className='flex flex-col gap-2'>
           <h1 className='text-xl mb-2 text-center'>Image сolor corection</h1>
           <Range label={'Yellow saturation'} min={0} max={100} value={coef} onChange={setCoef}/>
@@ -84,9 +86,9 @@ function ColorPage() {
           <ColorConverter colorVal={new Color({r: 100, g: 30, b: 200})}/>
         </div>
         
-      </Settings>
+      </SettingsContainer>
       
-    </div>
+    </PageContainer>
   )
 }
 
