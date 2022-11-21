@@ -2,7 +2,7 @@ import React from 'react'
 
 const PageContainer = ({children}) => {
   return (
-    <div className='flex h-full'>
+    <div className='flex min-h-full'>
         {children}
     </div>
   )

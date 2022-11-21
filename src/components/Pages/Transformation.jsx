@@ -166,10 +166,9 @@ const Transformation = () =>
   return (
     <PageContainer>
         <MainContentContainer>
-        <div id="affineCanvas" className="affineCanvas w-full h-full"></div>
+        <div id="affineCanvas" className="affineCanvas w-full h-screen"></div>
         </MainContentContainer>
         <SettingsContainer>
-            <div className='flex flex-col gap-2'>
                 <h1 className='text-xl mb-2 text-center'>Triangle Vertexes</h1>
                 <div className='flex gap-2 items-center'>
                     <label>A:</label>
@@ -199,7 +198,6 @@ const Transformation = () =>
                 <PrimaryButton onClick={complexTransform}>Complex Transform</PrimaryButton>
                 <OutlinedButton onClick={moveTransform}>Move</OutlinedButton>
                 <OutlinedButton onClick={scaleTransform}>Scale</OutlinedButton>
-            </div>
         </SettingsContainer>
     </PageContainer>
   )

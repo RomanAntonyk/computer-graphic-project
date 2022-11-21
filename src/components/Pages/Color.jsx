@@ -7,14 +7,33 @@ import Color from 'color'
 import SettingsContainer from '../Containers/SettingsContainer'
 import PageContainer from '../Containers/PageContainer'
 import MainContentContainer from '../Containers/MainContentContainer'
+import { useEffect } from 'react'
 
 function ColorPage() {
   const[coef, setCoef] = useState(0);
-  const canvas =  useRef();
+  const[hoveredColor, setHoveredColor] = useState(new Color('#000000'));
+  const canvasRef =  useRef(null);
+  const contextRef = useRef(null)
   const imgRef = useRef(null);
 
+  useEffect(()=>{
+    canvasRef.current.addEventListener("mousemove", (event) => pick(event));
+    contextRef.current = canvasRef.current.getContext("2d");
+  },[])
+
+  const pick = (event) =>{
+    const canvas = canvasRef.current;
+    const ctx = contextRef.current;
+    const bounding = canvas.getBoundingClientRect();
+    const x = event.clientX - bounding.left;
+    const y = event.clientY - bounding.top;
+    const pixel = ctx.getImageData(x, y, 1, 1);
+    const data = pixel.data;
+    let color = new Color({r:data[0], g:data[1], b: data[2]});
+    setHoveredColor(color);
+  }
   function drawImage(ctx, img){
-      const canv = canvas.current;
+      const canv = canvasRef.current;
       canv.width = img.width;
       canv.height = img.height;
       ctx.drawImage(img, 0,0);
@@ -28,7 +47,7 @@ function ColorPage() {
         img.src = reader.result;
         img.onload = function () {
             imgRef.current = img;
-            drawImage(canvas.current.getContext('2d'), img);
+            drawImage(contextRef.current, img);
         }
         
     }
@@ -36,12 +55,12 @@ function ColorPage() {
   }
   
   const revert =()=>{
-    drawImage(canvas.current.getContext('2d'), imgRef.current)
+    drawImage(contextRef.current, imgRef.current)
   }
 
   const saturarionChange = () => {
-    const cvs = canvas.current;
-    const ctx = cvs.getContext("2d");
+    const cvs = canvasRef.current;
+    const ctx = contextRef.current;
     ctx.clearRect(0,0, cvs.width, cvs.height);
     drawImage(ctx, imgRef.current)
     const imageData = ctx.getImageData(0, 0, cvs.width, cvs.height);
@@ -59,7 +78,7 @@ function ColorPage() {
   };
 
   function saveCanvasImage() {
-    const cvs = canvas.current
+    const cvs = canvasRef.current
     const link = document.createElement('a');
     link.download = 'convertedImg.png';
     link.href = cvs.toDataURL();
@@ -69,21 +88,19 @@ function ColorPage() {
   return (
     <PageContainer>
       <MainContentContainer>
-        <canvas ref={canvas}></canvas>
+        <canvas ref={canvasRef}></canvas>
       </MainContentContainer>
       <SettingsContainer>
-        <div className='flex flex-col gap-2'>
           <h1 className='text-xl mb-2 text-center'>Image сolor corection</h1>
           <Range label={'Yellow saturation'} min={0} max={100} value={coef} onChange={setCoef}/>
-          <PrimaryButton className = 'w-full' disable={imgRef.current===null} onClick={saturarionChange}>Correct Color</PrimaryButton>
-          <OutlinedButton className = 'w-full' disable={imgRef.current===null} onClick={revert}>Revert </OutlinedButton>
-          <OutlinedButton className = 'w-full' disable={imgRef.current===null} onClick={saveCanvasImage}>Download</OutlinedButton>
+          <PrimaryButton disable={imgRef.current===null} onClick={saturarionChange}>Correct Color</PrimaryButton>
+          <OutlinedButton disable={imgRef.current===null} onClick={revert}>Revert </OutlinedButton>
+          <OutlinedButton disable={imgRef.current===null} onClick={saveCanvasImage}>Download</OutlinedButton>
           <input type="file" accept="image/*" onChange={handleImage}/>
           
-        </div>
         <div>
            <h1 className='text-xl mb-2 text-center'>Color converter</h1>
-          <ColorConverter colorVal={new Color({r: 100, g: 30, b: 200})}/>
+          <ColorConverter color={hoveredColor} onChange={(color)=> setHoveredColor(color)}/>
         </div>
         
       </SettingsContainer>
