@@ -5,6 +5,7 @@ import SettingsContainer from '../Containers/SettingsContainer'
 import ColorHelp from './Help/ColorHelp'
 import { FractalHelp } from './Help/FractalHelp'
 import OutlinedButton from '../UI/OutlinedButton'
+import TransformationHelp from './Help/TransformationHelp'
 
 const Help = () => {
     const[display, setDisplay] = useState([true, false, false]);
@@ -25,7 +26,7 @@ const Help = () => {
             display[1] ? <ColorHelp/> : null
            }
             {
-            display[2] ? <FractalHelp/> : null
+            display[2] ? <TransformationHelp/> : null
            }
         </div>
         <SettingsContainer>

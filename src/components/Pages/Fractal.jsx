@@ -133,9 +133,9 @@ const Fractal = () => {
                 <Input value={zoom} onChange={e=>setZoom(e.target.value)} type="number"/>
                 <h3 className='text-lg'>Complex constant:</h3>
                 <label>Real:</label>
-                <Input value={real} onChange={e=>setReal(e.target.value)}type="number"/>
+                <Input value={real} onChange={e=>setReal(parseFloat(e.target.value))}type="number"/>
                 <label>Imaginary:</label>
-                <Input value={imag} onChange={e=>setImag(e.target.value)} type="number"/>
+                <Input value={imag} onChange={e=>setImag(parseFloat(e.target.value))} type="number"/>
                 <h3 className='text-lg text-center'>Colors</h3>
                 <ColorList className='mx-2 ' colors={colorList} onChange={list=>setColorList(list)}/>
                 
@@ -146,7 +146,7 @@ const Fractal = () => {
                     </>: null} */}
                 
             {/* </div> */}
-                <PrimaryButton onClick={drawFractal}>Draw Fractal</PrimaryButton>
+                <PrimaryButton className={'mt-10'} onClick={drawFractal}>Draw Fractal</PrimaryButton>
                 <OutlinedButton onClick={saveCanvasImage}>Download</OutlinedButton>
         </SettingsContainer>
     </PageContainer>
